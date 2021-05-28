@@ -1997,6 +1997,7 @@ func (s *rpcServer) prepareLeasesResponse(ctx context.Context,
 					ChannelNodeTier:      nodeTier,
 					SelfChanBalance:      selfChanBalance,
 					SidecarChannel:       isSidecarChannel,
+					Expired:              leaseExpiryHeight <= atomic.LoadUint32(&s.bestHeight),
 				})
 
 				numChans++

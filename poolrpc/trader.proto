@@ -898,6 +898,9 @@ message Lease {
 
     // Whether the channel was leased as a sidecar channel (bid orders only).
     bool sidecar_channel = 15;
+
+    // Whether the lease has expired.
+    bool expired = 16;
 }
 
 message LeasesRequest {

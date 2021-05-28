@@ -27,6 +27,7 @@ type Lease struct {
 	Purchased             bool   `json:"purchased"`
 	SelfChanBalance       uint64 `json:"self_chan_balance"`
 	SidecarChannel        bool   `json:"sidecar_channel"`
+	Expired               bool   `json:"expired"`
 }
 
 // NewLeaseFromProto creates a display Lease from its proto.
@@ -51,6 +52,7 @@ func NewLeaseFromProto(a *poolrpc.Lease) *Lease {
 		Purchased:             a.Purchased,
 		SelfChanBalance:       a.SelfChanBalance,
 		SidecarChannel:        a.SidecarChannel,
+		Expired:               a.Expired,
 	}
 }
 
