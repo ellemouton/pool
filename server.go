@@ -142,12 +142,18 @@ func (s *Server) Start() error {
 		return err
 	}
 
+	rks, err := lndclient.NewBoltMacaroonStore(
+		s.cfg.BaseDir, "macaroons.db", clientdb.DefaultPoolDBTimeout,
+	)
+	if err != nil {
+		return err
+	}
+
 	// Create and start the macaroon service and let it create its default
 	// macaroon in case it doesn't exist yet.
 	s.macaroonService, err = lndclient.NewMacaroonService(
 		&lndclient.MacaroonServiceConfig{
-			DBPath:           s.cfg.BaseDir,
-			DBTimeout:        clientdb.DefaultPoolDBTimeout,
+			RootKeyStore:     rks,
 			MacaroonLocation: poolMacaroonLocation,
 			MacaroonPath:     s.cfg.MacaroonPath,
 			Checkers: []macaroons.Checker{
@@ -356,13 +362,19 @@ func (s *Server) StartAsSubserver(lndClient lnrpc.LightningClient,
 	}()
 
 	if withMacaroonService {
+		rks, err := lndclient.NewBoltMacaroonStore(
+			s.cfg.BaseDir, "macaroons.db",
+			clientdb.DefaultPoolDBTimeout,
+		)
+		if err != nil {
+			return err
+		}
+
 		// Create and start the macaroon service and let it create its default
 		// macaroon in case it doesn't exist yet.
-		var err error
 		s.macaroonService, err = lndclient.NewMacaroonService(
 			&lndclient.MacaroonServiceConfig{
-				DBPath:           s.cfg.BaseDir,
-				DBTimeout:        clientdb.DefaultPoolDBTimeout,
+				RootKeyStore:     rks,
 				MacaroonLocation: poolMacaroonLocation,
 				MacaroonPath:     s.cfg.MacaroonPath,
 				Checkers: []macaroons.Checker{

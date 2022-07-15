@@ -18,15 +18,15 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.5.0
 	github.com/jessevdk/go-flags v1.4.0
 	github.com/lightninglabs/aperture v0.1.18-beta
-	github.com/lightninglabs/lndclient v0.15.0-10
+	github.com/lightninglabs/lndclient v0.16.0-0
 	github.com/lightninglabs/pool/auctioneerrpc v1.0.7
 	github.com/lightninglabs/protobuf-hex-display v1.4.3-hex-display
-	github.com/lightningnetwork/lnd v0.15.0-beta
+	github.com/lightningnetwork/lnd v0.15.0-beta.rc6.0.20220714125147-af97b8f877c2
 	github.com/lightningnetwork/lnd/cert v1.1.1
 	github.com/lightningnetwork/lnd/tlv v1.0.3
 	github.com/lightningnetwork/lnd/tor v1.0.1
 	github.com/stretchr/testify v1.7.1
-	github.com/urfave/cli v1.22.4
+	github.com/urfave/cli v1.22.9
 	go.etcd.io/bbolt v1.3.6
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	google.golang.org/grpc v1.39.0
