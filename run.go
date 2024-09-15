@@ -20,13 +20,17 @@ func Run(cfg *Config) error {
 	}
 	cfg.RequestShutdown = cfg.ShutdownInterceptor.RequestShutdown
 
-	logWriter = build.NewRotatingLogWriter()
-	SetupLoggers(logWriter, cfg.ShutdownInterceptor)
+	logWriter := build.NewRotatingLogWriter()
+	logMgr := build.NewSubLoggerManager(
+		build.NewConsoleHandler(os.Stdout),
+		build.NewLogFileHandler(logWriter),
+	)
+	SetupLoggers(logMgr, cfg.ShutdownInterceptor)
 
 	// Special show command to list supported subsystems and exit.
 	if cfg.DebugLevel == "show" {
 		fmt.Printf("Supported subsystems: %v\n",
-			logWriter.SupportedSubsystems())
+			logMgr.SupportedSubsystems())
 		os.Exit(0)
 	}
 
@@ -38,7 +42,7 @@ func Run(cfg *Config) error {
 	if err != nil {
 		return err
 	}
-	err = build.ParseAndSetDebugLevels(cfg.DebugLevel, logWriter)
+	err = build.ParseAndSetDebugLevels(cfg.DebugLevel, logMgr)
 	if err != nil {
 		return err
 	}

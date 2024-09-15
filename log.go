@@ -25,14 +25,14 @@ import (
 const Subsystem = "POOL"
 
 var (
-	logWriter = build.NewRotatingLogWriter()
+	logWriter *build.SubLoggerManager
 	log       = build.NewSubLogger(Subsystem, nil)
 	rpcLog    = build.NewSubLogger("RPCS", nil)
 	sdcrLog   = build.NewSubLogger("SDCR", nil)
 )
 
 // SetupLoggers initializes all package-global logger variables.
-func SetupLoggers(root *build.RotatingLogWriter, intercept signal.Interceptor) {
+func SetupLoggers(root *build.SubLoggerManager, intercept signal.Interceptor) {
 	genLogger := genSubLogger(root, intercept)
 
 	logWriter = root
@@ -62,7 +62,7 @@ func SetupLoggers(root *build.RotatingLogWriter, intercept signal.Interceptor) {
 
 // genSubLogger creates a logger for a subsystem. We provide an instance of
 // a signal.Interceptor to be able to shutdown in the case of a critical error.
-func genSubLogger(root *build.RotatingLogWriter,
+func genSubLogger(root *build.SubLoggerManager,
 	interceptor signal.Interceptor) func(string) btclog.Logger {
 
 	// Create a shutdown function which will request shutdown from our
